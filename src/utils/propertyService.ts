@@ -131,3 +131,17 @@ export async function createProperty(
   const property: Property = await response.json();
   return { propertyId: property.property_id };
 }
+
+export async function deleteProperty(id: string): Promise<void> {
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/properties/id/${id}`,
+  );
+  const response = await fetch(url, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Could not delete property (${response.status})`);
+  }
+}

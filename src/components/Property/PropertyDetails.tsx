@@ -1,5 +1,6 @@
 import type { Property } from "@/types/property"
 import Image from "next/image"
+import PropertyDeleteButton from "./PropertyDeleteButton"
 
 type PropertyDetailsProps = {
   property: Property
@@ -93,6 +94,13 @@ export default function PropertyDetails({
         >
           Up to {property.max_guests} guests
         </p>
+
+        {!isCard && (
+          <PropertyDeleteButton
+            propertyId={property.property_id}
+            ownerId={property.owner_id}
+          />
+        )}
       </div>
     </article>
   )

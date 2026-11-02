@@ -6,6 +6,7 @@ import type { PropertiesFilter } from "@/utils/propertyService"
 import type { Property } from "@/types/property"
 import { PropertyCard } from "./PropertyCard"
 import PropertyFilter from "./PropertyFilter"
+import PropertyDeleteButton from "./PropertyDeleteButton"
 
 type PropertyListProps = {
   mode: "mine" | "all"
@@ -15,6 +16,8 @@ export default function PropertyList({mode}: PropertyListProps) {
   const [properties, setProperties] = useState<Property[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+
+  const [message, setMessage] = useState("")
 
   const loadProperties = useCallback(
     async (filters: PropertiesFilter = {}) => {
@@ -49,7 +52,7 @@ export default function PropertyList({mode}: PropertyListProps) {
       <div className="mb-5 flex items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-            Places to stay
+            {mode==="all" ? "Places to stay" : "My Properties"}
           </h1>
           {!loading && !error && (
             <p className="mt-1 text-sm text-slate-500">
@@ -62,6 +65,11 @@ export default function PropertyList({mode}: PropertyListProps) {
       {error && (
         <p role="alert" className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
           {error}
+        </p>
+      )}
+      {message && (
+        <p role="status" className="mb-6 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+          {message}
         </p>
       )}
 
@@ -91,7 +99,25 @@ export default function PropertyList({mode}: PropertyListProps) {
       ) : (
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {properties.map((property) => (
-          <PropertyCard key={property.property_id} property={property} />
+          <div key={property.property_id}>
+            <PropertyCard property={property} />
+            {mode === "mine" && (
+              <div className="mt-3">
+                <PropertyDeleteButton
+                  propertyId={property.property_id}
+                  ownerId={property.owner_id}
+                  onDeleted={() => {
+                    setProperties((current) =>
+                      current.filter(
+                        (item) => item.property_id !== property.property_id
+                      )
+                    )
+                    setMessage("Boendet har raderats.")
+                  }}
+                />
+              </div>
+            )}
+          </div>
         ))}
       </div>
       )}
