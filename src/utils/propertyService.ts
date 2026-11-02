@@ -46,3 +46,19 @@ export async function getProperties(
 
   return response.json()
 }
+
+export async function getPropertyById(id: string): Promise<Property | null> {
+    try {
+    const url = new URL(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/properties/id/${id}`,
+    );
+    const response = await fetch(url);
+    if (!response.ok) {
+      return null;
+    }
+    const property: Property = await response.json();
+    return property;
+  } catch {
+    return null;
+  }
+}
