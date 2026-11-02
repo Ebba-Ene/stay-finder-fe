@@ -1,6 +1,6 @@
 import { Database } from "./database.types"
 
-export type PropertyKind = "apartment" | "villa"
+export type PropertyKind = "Apartment" | "Villa"
 
 export type Property = Database["public"]["Tables"]["properties"]["Row"]
 
