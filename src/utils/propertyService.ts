@@ -63,6 +63,24 @@ export async function getPropertyById(id: string): Promise<Property | null> {
   }
 }
 
+export async function getMyProperties(): Promise<Property[]> {
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/properties/mine`
+  );
+
+  const response = await fetch(url, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Could not fetch your properties (${response.status})`);
+  }
+
+  const properties: Property[] = await response.json();
+  return properties;
+}
+
 export async function createProperty(
   formData: FormData
 ): Promise<CreatePropertyState> {

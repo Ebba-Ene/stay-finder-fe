@@ -1,13 +1,17 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react"
-import { getProperties } from "@/utils/propertyService"
+import { getMyProperties, getProperties } from "@/utils/propertyService"
 import type { PropertiesFilter } from "@/utils/propertyService"
 import type { Property } from "@/types/property"
 import { PropertyCard } from "./PropertyCard"
 import PropertyFilter from "./PropertyFilter"
 
-export default function PropertyList() {
+type PropertyListProps = {
+  mode: "mine" | "all"
+}
+
+export default function PropertyList({mode}: PropertyListProps) {
   const [properties, setProperties] = useState<Property[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
@@ -18,14 +22,18 @@ export default function PropertyList() {
       setError("")
 
       try {
-        setProperties(await getProperties(filters))
+        if(mode === "all"){
+          setProperties(await getProperties(filters))
+        } else if(mode === "mine"){
+          setProperties(await getMyProperties())
+        }
       } catch {
-        setError("Kunde inte hämta boenden.")
+        setError("Could not get properties.")
       } finally {
         setLoading(false)
       }
     },
-    []
+    [mode]
   )
 
   useEffect(() => {
@@ -34,7 +42,9 @@ export default function PropertyList() {
 
   return (
     <section className="w-full">
-      <PropertyFilter loading={loading} onFilter={loadProperties} />
+      {mode === "all" && (
+        <PropertyFilter loading={loading} onFilter={loadProperties} />
+      )}
 
       <div className="mb-5 flex items-end justify-between gap-4">
         <div>
