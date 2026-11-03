@@ -2,9 +2,9 @@ import PropertyList from "@/components/Property/PropertyList";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <PropertyList/>
+    <div className="flex min-h-screen flex-1 flex-col items-center bg-slate-50 font-sans">
+      <main className="w-full max-w-7xl flex-1 px-4 py-10 sm:px-6 lg:px-8">
+        <PropertyList mode="all"/>
       </main>
     </div>
   );
