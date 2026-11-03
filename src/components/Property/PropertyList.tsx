@@ -2,13 +2,14 @@
 
 import { useCallback, useEffect, useState } from "react"
 
-import { getMyProperties, getProperties, getPropertiesByKind } from "@/utils/propertyService"
 import type { PropertiesFilter } from "@/utils/propertyService"
 import type { Property } from "@/types/property"
+import { getMyProperties, getProperties, getPropertiesByKind } from "@/utils/propertyService"
+
 import { PropertyCard } from "./PropertyCard"
 import PropertyFilter from "./PropertyFilter"
-import PropertyDeleteButton from "./PropertyDeleteButton"
 import EditButton from "../EditButton"
+import DeleteButton from "../DeleteButton"
 
 type PropertyListProps = {
   mode: "mine" | "all"
@@ -114,8 +115,9 @@ export default function PropertyList({mode}: PropertyListProps) {
                   entityId={property.property_id}
                   ownerId={property.owner_id}
                 />
-                <PropertyDeleteButton
-                  propertyId={property.property_id}
+                <DeleteButton
+                  entityType="property"
+                  entityId={property.property_id}
                   ownerId={property.owner_id}
                   onDeleted={() => {
                     setProperties((current) =>

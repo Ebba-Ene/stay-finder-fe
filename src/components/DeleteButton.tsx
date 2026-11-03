@@ -4,17 +4,19 @@ import { useState } from "react"
 import { deleteProperty } from "@/utils/propertyService"
 import { useAuth } from "@/contexts/AuthContext"
 
-type PropertyDeleteButtonProps = {
-  propertyId: string
+type DeleteButtonProps = {
+  entityId: string,
+  entityType: "property" | "booking"
   ownerId: string | null
   onDeleted?: () => void
 }
 
-export default function PropertyDeleteButton({
-  propertyId,
+export default function DeleteButton({
+  entityId,
   ownerId,
   onDeleted,
-}: PropertyDeleteButtonProps) {
+  entityType,
+}: DeleteButtonProps) {
   const { user } = useAuth()
   const [message, setMessage] = useState("")
   const [deleting, setDeleting] = useState(false)
@@ -28,8 +30,13 @@ export default function PropertyDeleteButton({
     setMessage("")
 
     try {
-      await deleteProperty(propertyId)
-      setMessage("Boendet har raderats.")
+      if(entityType === "property") {
+        await deleteProperty(entityId)
+        setMessage("Boendet have been deleted.")
+      } else if(entityType === "booking"){
+        // await deleteBooking(entityId)
+        setMessage("Booking har raderats.")
+      }
       onDeleted?.()
     } catch {
       setMessage("Kunde inte radera boendet.")

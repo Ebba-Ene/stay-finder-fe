@@ -1,7 +1,8 @@
-import type { Property } from "@/types/property"
 import Image from "next/image"
-import PropertyDeleteButton from "./PropertyDeleteButton"
+
+import type { Property } from "@/types/property"
 import EditButton from "../EditButton"
+import DeleteButton from "../DeleteButton"
 
 type PropertyDetailsProps = {
   property: Property
@@ -103,8 +104,9 @@ export default function PropertyDetails({
               entityId={property.property_id}
               ownerId={property.owner_id}
             />
-            <PropertyDeleteButton
-              propertyId={property.property_id}
+            <DeleteButton
+              entityType="property"
+              entityId={property.property_id}
               ownerId={property.owner_id}
             />
           </div>
