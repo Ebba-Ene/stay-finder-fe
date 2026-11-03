@@ -59,8 +59,12 @@ const AuthProvider = ({children}: PropsWithChildren) => {
         throw "Invald credentials"
       }
 
-      
-      // Vid lyckad inloggning avslutas funktionen här.
+      const user = await getMe()
+      if (!user) {
+        return "Login succeeded, but no active session was found."
+      }
+
+      setUser(user)
       return
     } catch(e) {
         console.warn("error in logging in", e)
@@ -87,9 +91,6 @@ const AuthProvider = ({children}: PropsWithChildren) => {
   const _getMe = async () => {
     try{
       const user = await getMe()
-      if(!user){
-        throw "User not found"
-      }
       setUser(user)
     } catch(e) {
       console.warn("error in getting me", e)

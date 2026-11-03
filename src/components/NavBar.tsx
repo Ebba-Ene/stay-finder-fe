@@ -2,6 +2,7 @@
 
 import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
+import LogOutButton from "./Auth/LogOutButton";
 
 export default function NavBar() {
   const auth = useAuth()
@@ -50,6 +51,8 @@ export default function NavBar() {
               <span className="hidden border-l border-slate-200 pl-3 text-sm text-slate-500 md:inline">
                 Welcome, <span className="font-semibold text-slate-800">{auth.user.name}</span>
               </span>
+
+              <LogOutButton/>
             </>
           ) : (
             <Link
