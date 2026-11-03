@@ -17,6 +17,7 @@ export default function PropertyFilter({
   const [country, setCountry] = useState("")
   const [maxPrice, setMaxPrice] = useState("")
   const [maxGuests, setMaxGuests] = useState("")
+  const [sortPrice, setSortPrice] = useState<"asc" | "desc" | "">("")
   const [kind, setKind] = useState<PropertyKind | "">("")
 
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
@@ -28,6 +29,7 @@ export default function PropertyFilter({
       maxPrice: maxPrice ? Number(maxPrice) : undefined,
       maxGuests: maxGuests ? Number(maxGuests) : undefined,
       kind: kind || undefined,
+      sortPrice: sortPrice || undefined,
     })
   }
 
@@ -37,6 +39,7 @@ export default function PropertyFilter({
     setMaxPrice("")
     setMaxGuests("")
     setKind("")
+    setSortPrice("")
     void onFilter({})
   }
 
@@ -52,7 +55,7 @@ export default function PropertyFilter({
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         <div>
           <label htmlFor="property-kind" className="mb-1.5 block text-sm font-medium text-slate-700">
             Property type
@@ -109,6 +112,24 @@ export default function PropertyFilter({
             onChange={(event) => setMaxPrice(event.target.value)}
             className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
           />
+        </div>
+        <div>
+          <label htmlFor="property-sort-price" className="mb-1.5 block text-sm font-medium text-slate-700">
+            Sort by price
+          </label>
+          <select
+            id="property-sort-price"
+            name="sortPrice"
+            value={sortPrice}
+            onChange={(event) =>
+              setSortPrice(event.target.value as "asc" | "desc" | "")
+            }
+            className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+          >
+            <option value="">Default order</option>
+            <option value="asc">Price: low to high</option>
+            <option value="desc">Price: high to low</option>
+          </select>
         </div>
         <div>
           <label htmlFor="property-max-guests" className="mb-1.5 block text-sm font-medium text-slate-700">
