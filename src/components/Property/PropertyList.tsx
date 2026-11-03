@@ -1,7 +1,8 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react"
-import { getMyProperties, getProperties } from "@/utils/propertyService"
+
+import { getMyProperties, getProperties, getPropertiesByKind } from "@/utils/propertyService"
 import type { PropertiesFilter } from "@/utils/propertyService"
 import type { Property } from "@/types/property"
 import { PropertyCard } from "./PropertyCard"
@@ -27,7 +28,11 @@ export default function PropertyList({mode}: PropertyListProps) {
 
       try {
         if(mode === "all"){
-          setProperties(await getProperties(filters))
+          setProperties(
+            filters.kind
+              ? await getPropertiesByKind(filters, filters.kind)
+              : await getProperties(filters)
+          )
         } else if(mode === "mine"){
           setProperties(await getMyProperties())
         }

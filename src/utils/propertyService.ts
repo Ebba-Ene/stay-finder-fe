@@ -34,7 +34,6 @@ export async function getProperties(
   if (filters.maxPrice !== undefined) {
     params.set("max_price", String(filters.maxPrice))
   }
-  if (filters.kind) params.set("kind", filters.kind)
   if (filters.sortPrice) params.set("sort_price", filters.sortPrice)
 
   url.search = params.toString()
@@ -61,6 +60,33 @@ export async function getPropertyById(id: string): Promise<Property | null> {
   } catch {
     return null;
   }
+}
+
+export async function getPropertiesByKind(
+  filters: PropertiesFilter = {},
+  kind: PropertyKind
+): Promise<Property[]> {
+  const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/properties/kind/${kind}`)
+  const params = new URLSearchParams()
+
+  if (filters.city) params.set("city", filters.city)
+  if (filters.country) params.set("country", filters.country)
+  if (filters.maxGuests !== undefined) {
+    params.set("max_guests", String(filters.maxGuests))
+  }
+  if (filters.maxPrice !== undefined) {
+    params.set("max_price", String(filters.maxPrice))
+  }
+  if (filters.sortPrice) params.set("sort_price", filters.sortPrice)
+
+  url.search = params.toString()
+  
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error(`Could not fetch properties (${response.status})`)
+  }
+
+  return response.json()
 }
 
 export async function getMyProperties(): Promise<Property[]> {

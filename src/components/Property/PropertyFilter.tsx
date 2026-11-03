@@ -2,6 +2,7 @@
 
 import { useState, type SubmitEvent } from "react"
 import type { PropertiesFilter } from "@/utils/propertyService"
+import type { PropertyKind } from "@/types/property"
 
 type PropertyFilterProps = {
   loading: boolean
@@ -16,6 +17,7 @@ export default function PropertyFilter({
   const [country, setCountry] = useState("")
   const [maxPrice, setMaxPrice] = useState("")
   const [maxGuests, setMaxGuests] = useState("")
+  const [kind, setKind] = useState<PropertyKind | "">("")
 
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -25,6 +27,7 @@ export default function PropertyFilter({
       country: country.trim() || undefined,
       maxPrice: maxPrice ? Number(maxPrice) : undefined,
       maxGuests: maxGuests ? Number(maxGuests) : undefined,
+      kind: kind || undefined,
     })
   }
 
@@ -33,6 +36,7 @@ export default function PropertyFilter({
     setCountry("")
     setMaxPrice("")
     setMaxGuests("")
+    setKind("")
     void onFilter({})
   }
 
@@ -44,11 +48,27 @@ export default function PropertyFilter({
       <div className="mb-5">
         <h2 className="text-lg font-semibold text-slate-900">Find your stay</h2>
         <p className="mt-1 text-sm text-slate-500">
-          Narrow down the results by location, price, or guest capacity.
+          Narrow down the results by type, location, price, or guest capacity.
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div>
+          <label htmlFor="property-kind" className="mb-1.5 block text-sm font-medium text-slate-700">
+            Property type
+          </label>
+          <select
+            id="property-kind"
+            name="kind"
+            value={kind}
+            onChange={(event) => setKind(event.target.value as PropertyKind | "")}
+            className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+          >
+            <option value="">All types</option>
+            <option value="Apartment">Apartment</option>
+            <option value="Villa">Villa</option>
+          </select>
+        </div>
         <div>
           <label htmlFor="property-city" className="mb-1.5 block text-sm font-medium text-slate-700">
             City
