@@ -132,6 +132,57 @@ export async function createProperty(
   return { propertyId: property.property_id };
 }
 
+export async function editProperty(
+  formData: FormData, id: string
+): Promise<CreatePropertyState> {
+    const title = String(formData.get("title") ?? "").trim()
+    const description = String(formData.get("description") ?? "").trim()
+    const country = String(formData.get("country") ?? "").trim()
+    const city = String(formData.get("city") ?? "").trim()
+    const kindOfProperty = String(formData.get("kind") ?? "")
+    const maxGuests = Number(formData.get("max_guests"))
+    const pricePerNight = Number(formData.get("price_per_night"))
+    const imageUrl = String(formData.get("image_url") ?? "").trim()
+
+    if (!isPropertyKind(kindOfProperty)) {
+      return { error: "Choose apartment or villa." }
+    };
+
+    const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/properties/${id}`,
+    {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        country,
+        city,
+        kind_of_property: kindOfProperty,
+        max_guests: maxGuests,
+        price_per_night: pricePerNight,
+        ...(imageUrl ? { image_url: imageUrl } : {}),
+      })
+    }
+  );
+
+  if (response.status === 401) {
+    return { error: "You need to be signed in to list a stay." };
+  }
+
+  if (!response.ok) {
+    return {
+      error: "Could not update the stay. Check the fields and try again.",
+    };
+  }
+
+  return response.json()
+}
+
+
 export async function deleteProperty(id: string): Promise<void> {
   const url = new URL(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/properties/id/${id}`,

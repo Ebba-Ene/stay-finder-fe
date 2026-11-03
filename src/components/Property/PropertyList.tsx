@@ -7,6 +7,7 @@ import type { Property } from "@/types/property"
 import { PropertyCard } from "./PropertyCard"
 import PropertyFilter from "./PropertyFilter"
 import PropertyDeleteButton from "./PropertyDeleteButton"
+import EditButton from "../EditButton"
 
 type PropertyListProps = {
   mode: "mine" | "all"
@@ -102,7 +103,12 @@ export default function PropertyList({mode}: PropertyListProps) {
           <div key={property.property_id}>
             <PropertyCard property={property} />
             {mode === "mine" && (
-              <div className="mt-3">
+              <div className="mt-3 flex flex-wrap items-start gap-3">
+                <EditButton
+                  entityType="property"
+                  entityId={property.property_id}
+                  ownerId={property.owner_id}
+                />
                 <PropertyDeleteButton
                   propertyId={property.property_id}
                   ownerId={property.owner_id}

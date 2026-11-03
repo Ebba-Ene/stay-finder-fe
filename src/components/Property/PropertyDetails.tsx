@@ -1,6 +1,7 @@
 import type { Property } from "@/types/property"
 import Image from "next/image"
 import PropertyDeleteButton from "./PropertyDeleteButton"
+import EditButton from "../EditButton"
 
 type PropertyDetailsProps = {
   property: Property
@@ -96,10 +97,17 @@ export default function PropertyDetails({
         </p>
 
         {!isCard && (
-          <PropertyDeleteButton
-            propertyId={property.property_id}
-            ownerId={property.owner_id}
-          />
+          <div className="flex flex-wrap items-start gap-3 border-t border-slate-100 pt-5">
+            <EditButton
+              entityType="property"
+              entityId={property.property_id}
+              ownerId={property.owner_id}
+            />
+            <PropertyDeleteButton
+              propertyId={property.property_id}
+              ownerId={property.owner_id}
+            />
+          </div>
         )}
       </div>
     </article>
