@@ -4,6 +4,7 @@ import { Booking } from "@/types/booking"
 import { getMyBookings, getPropertyBookings } from "@/utils/bookingService"
 import { useCallback, useEffect, useState } from "react"
 import { BookingCard } from "./BookingCard"
+import EditButton from "../EditButton"
 
 type BookingListPage = {
   mode: "mine" | "properties"
@@ -90,6 +91,13 @@ export default function BookingList({mode}: BookingListPage) {
         {bookings.map((booking) => (
           <div key={booking.booking_id}>
             <BookingCard booking={booking} mode={mode} />
+            {mode === "mine" && (
+              <EditButton
+                entityType="booking"
+                entityId={booking.booking_id}
+                ownerId={booking.owner_id}
+              />
+            )}
           </div>
         ))}
       </div>
