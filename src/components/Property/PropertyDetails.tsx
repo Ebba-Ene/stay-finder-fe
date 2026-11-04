@@ -3,6 +3,7 @@ import Image from "next/image"
 import type { Property } from "@/types/property"
 import EditButton from "../EditButton"
 import DeleteButton from "../DeleteButton"
+import CreateBookingButton from "../Bookings/CreateBookingButton"
 
 type PropertyDetailsProps = {
   property: Property
@@ -99,6 +100,10 @@ export default function PropertyDetails({
 
         {!isCard && (
           <div className="flex flex-wrap items-start gap-3 border-t border-slate-100 pt-5">
+            <CreateBookingButton
+              propertyId={property.property_id}
+              ownerId={property.owner_id}
+            />
             <EditButton
               entityType="property"
               entityId={property.property_id}

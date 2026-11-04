@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { deleteProperty } from "@/utils/propertyService"
 import { useAuth } from "@/contexts/AuthContext"
+import { deleteBooking } from "@/utils/bookingService"
 
 type DeleteButtonProps = {
   entityId: string,
@@ -32,14 +33,14 @@ export default function DeleteButton({
     try {
       if(entityType === "property") {
         await deleteProperty(entityId)
-        setMessage("Boendet have been deleted.")
+        setMessage("Stay have been deleted.")
       } else if(entityType === "booking"){
-        // await deleteBooking(entityId)
-        setMessage("Booking har raderats.")
+        await deleteBooking(entityId)
+        setMessage("Booking have been deleted.")
       }
       onDeleted?.()
     } catch {
-      setMessage("Kunde inte radera boendet.")
+      setMessage(`Could not delete ${entityType}.`)
     } finally {
       setDeleting(false)
     }
@@ -51,10 +52,10 @@ export default function DeleteButton({
         type="button"
         onClick={handleDelete}
         disabled={deleting}
-        aria-label="Radera boende"
+        aria-label={`Delete ${entityType}`}
         className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {deleting ? "Raderar..." : "Radera boende"}
+        {deleting ? "Deleting..." : `Delete ${entityType}.`}
       </button>
       {message && (
         <p role="status" className="mt-2 text-sm">
