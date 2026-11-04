@@ -169,3 +169,18 @@ export async function editBooking(
     return { error: "Something went wrong. Check your connection and try again." }
   }
 }
+
+export async function deleteBooking(id: string): Promise<void> {
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/bookings/${id}`
+  )
+  
+  const response = await fetch(url, {
+    method: "DELETE",
+    credentials: "include"
+  })
+
+  if(!response.ok){
+    throw new Error (`Could not delete booking (${response.status})`)
+  }
+}

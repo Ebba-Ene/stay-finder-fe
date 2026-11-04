@@ -5,6 +5,7 @@ import { getMyBookings, getPropertyBookings } from "@/utils/bookingService"
 import { useCallback, useEffect, useState } from "react"
 import { BookingCard } from "./BookingCard"
 import EditButton from "../EditButton"
+import DeleteButton from "../DeleteButton"
 
 type BookingListPage = {
   mode: "mine" | "properties"
@@ -92,11 +93,26 @@ export default function BookingList({mode}: BookingListPage) {
           <div key={booking.booking_id}>
             <BookingCard booking={booking} mode={mode} />
             {mode === "mine" && (
-              <EditButton
-                entityType="booking"
-                entityId={booking.booking_id}
-                ownerId={booking.owner_id}
-              />
+              <div className="mt-3 flex flex-wrap items-start gap-3">
+                <EditButton
+                  entityType="booking"
+                  entityId={booking.booking_id}
+                  ownerId={booking.owner_id}
+                />
+                <DeleteButton
+                  entityType="booking"
+                  entityId={booking.booking_id}
+                  ownerId={booking.owner_id}
+                  onDeleted={() => {
+                    setBookings((current) =>
+                      current.filter(
+                        (item) => item.booking_id !== booking.booking_id
+                      )
+                    )
+                    setMessage("Booking have been deleted.")
+                  }}
+                />
+              </div>
             )}
           </div>
         ))}
