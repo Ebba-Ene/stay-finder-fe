@@ -92,7 +92,7 @@ export default function BookingList({mode}: BookingListPage) {
         {bookings.map((booking) => (
           <div key={booking.booking_id}>
             <BookingCard booking={booking} mode={mode} 
-                        onStatusChanged={(newStatus) => {
+                onStatusChanged={(newStatus) => {
                 setBookings((current) =>
                   current.map((item) =>
                     item.booking_id === booking.booking_id
