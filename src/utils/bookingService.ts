@@ -184,3 +184,33 @@ export async function deleteBooking(id: string): Promise<void> {
     throw new Error (`Could not delete booking (${response.status})`)
   }
 }
+
+export async function confirmBooking(id: string){
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/bookings/properties/${id}/confirm`
+  )
+  
+  const response = await fetch(url, {
+    method: "PATCH",
+    credentials: "include"
+  })
+
+  if(!response.ok){
+    throw new Error (`Could not update booking (${response.status})`)
+  }
+}
+
+export async function cancelBooking(id: string){
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/bookings/properties/${id}/cancell`
+  )
+
+  const response = await fetch(url, {
+    method: "PATCH",
+    credentials: "include"
+  })
+
+  if(!response.ok){
+    throw new Error (`Could not update booking (${response.status})`)
+  }
+}

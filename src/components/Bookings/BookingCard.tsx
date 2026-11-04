@@ -1,9 +1,11 @@
 import type { Booking } from "@/types/booking"
 import Link from "next/link"
+import BookingStatusButton from "./BookingStatusButton"
 
 type BookingCardProps = {
   booking: Booking
   mode: "mine" | "properties"
+  onStatusChanged: (newStatus: Booking["status"]) => void
 }
 
 const statusStyles: Record<Booking["status"], string> = {
@@ -20,7 +22,7 @@ function formatDate(date: string) {
   })
 }
 
-export function BookingCard({ booking, mode }: BookingCardProps) {
+export function BookingCard({ booking, mode, onStatusChanged }: BookingCardProps) {
   return(
     <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md">
       <div className="flex items-start justify-between gap-4 border-b border-slate-100 p-5">
@@ -69,6 +71,24 @@ export function BookingCard({ booking, mode }: BookingCardProps) {
               total
             </span>
           </p>
+        </div>
+
+        <div className="flex flex-wrap items-start gap-3">
+          {mode === "properties" && booking.status === "pending" && (
+            <BookingStatusButton
+              status="confirm"
+              bookingId={booking.booking_id}
+              onStatusChanged={onStatusChanged}
+            />
+          )}
+
+          {booking.status !== "cancelled" && (
+            <BookingStatusButton
+              status="cancell"
+              bookingId={booking.booking_id}
+              onStatusChanged={onStatusChanged}
+            />
+          )}
         </div>
       </div>
     </article>

@@ -91,7 +91,17 @@ export default function BookingList({mode}: BookingListPage) {
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {bookings.map((booking) => (
           <div key={booking.booking_id}>
-            <BookingCard booking={booking} mode={mode} />
+            <BookingCard booking={booking} mode={mode} 
+                        onStatusChanged={(newStatus) => {
+                setBookings((current) =>
+                  current.map((item) =>
+                    item.booking_id === booking.booking_id
+                      ? { ...item, status: newStatus }
+                      : item
+                  )
+                )
+              }}
+            />
             {mode === "mine" && (
               <div className="mt-3 flex flex-wrap items-start gap-3">
                 <EditButton
