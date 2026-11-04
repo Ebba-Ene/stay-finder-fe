@@ -99,19 +99,21 @@ export default function BookingList({mode}: BookingListPage) {
                   entityId={booking.booking_id}
                   ownerId={booking.owner_id}
                 />
-                <DeleteButton
-                  entityType="booking"
-                  entityId={booking.booking_id}
-                  ownerId={booking.owner_id}
-                  onDeleted={() => {
-                    setBookings((current) =>
-                      current.filter(
-                        (item) => item.booking_id !== booking.booking_id
+                {booking.status === "cancelled" && (
+                  <DeleteButton
+                    entityType="booking"
+                    entityId={booking.booking_id}
+                    ownerId={booking.owner_id}
+                    onDeleted={() => {
+                      setBookings((current) =>
+                        current.filter(
+                          (item) => item.booking_id !== booking.booking_id
+                        )
                       )
-                    )
-                    setMessage("Booking have been deleted.")
-                  }}
-                />
+                      setMessage("Booking have been deleted.")
+                    }}
+                  />
+                )}
               </div>
             )}
           </div>
