@@ -1,6 +1,5 @@
 import PropertyDetails from "@/components/Property/PropertyDetails";
 import { getPropertyById } from "@/utils/propertyService";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
@@ -30,6 +29,7 @@ export default function PropertyPage({ params }: PropertyPageProps) {
 async function PropertyPageContent({ params }: PropertyDetailsProps) {
   const { id } = await params;
   const property = await getPropertyById(id);
+
   if (!property) {
     notFound();
   }
